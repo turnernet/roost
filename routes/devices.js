@@ -82,12 +82,14 @@ exports.gpioReadResponse = function(req,res,next){
 
 exports.statusOpenRequest = function(req,res,next){
 	gpio.open("16" , "input", function(err) {
+		console.log("open: " + err);
 		next();	
 });
 };
 
 exports.statusReadRequest = function(req,res,next){
 	gpio.read("16",  function(err,value) {
+		console.log("read: " + err + "  " + value);
 		gpio.close("16")
 		res.locals.data=value;
 		next();

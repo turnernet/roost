@@ -1,0 +1,37 @@
+{
+  "devices": [
+	{
+    "bus": "1wire",
+    "address": "/28.D6AA2B040000",
+	"direction": "in",
+	"alias": "basement1"
+	},
+	{
+	"bus": "1wire",
+	"direction": "in",
+	"address": "/10.AF4305010800",
+	"alias": "basement2"
+	},
+	{
+	"bus":"gpio",
+	"direction":"in",
+	"address": "23",
+	"alias":"Garage Door",
+	"sense":"active_high"
+	},
+	{
+	"bus":"gpio",
+	"direction":"in",
+	"address": "24",
+	"alias":"Presence",
+	"sense":"active_high"
+	},
+	{
+	"bus":"gpio",
+	"direction":"out",
+	"address": "25",
+	"alias":"Humidifier",
+	"sense": "active_high"
+	}
+	]
+}
