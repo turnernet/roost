@@ -2,8 +2,9 @@ var deviceManager = require("../devices/DeviceManager");
 
 
 
-var GarageDoor = function GarageDoor(){
-
+var GarageDoor = function GarageDoor(app){
+         console.log("GarageDoor app started");
+	this.app = app;
 	this.isOpen = function(){
 		return	deviceManager.isDeviceOn("Garage Door Sensor");
 	};
@@ -12,16 +13,19 @@ var GarageDoor = function GarageDoor(){
 		return deviceManager.setDeviceOn("Garage Door Control",open);
 	};
 
+	this.getRequest = function(resource,params){	
+		console.log("garagedoor getRequest " + resource);
+		if(resource=="door"){
+			return {"open":this.isOpen()};
+		}
+		else{
+			throw "Bad Resource"
+		}
+
+	};
+
 
 };
 
-GarageDoor.instance=null;
-   
-GarageDoor.getInstance = function(){
-      if(this.instance === null){
-        this.instance = new GarageDoor();
-      }
-      return this.instance;
-}
-module.exports = GarageDoor.getInstance();
+module.exports = GarageDoor
 

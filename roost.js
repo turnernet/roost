@@ -1,7 +1,6 @@
 var express = require('express');
 var devices= require('./routes/devices');
 var apps = require('./routes/apps');
-var DeviceManager = require('./devices/DeviceManager');
 var api = express();
 
 api.configure(function () {
@@ -20,18 +19,3 @@ api.listen(8000);
  
 console.log('Listening on port 8000...');
 
-
-setTimeout( function(){
-	DeviceManager.setDeviceOn("Humidifier",true);
-}, 6000);
-
-/*
-setInterval( function(){
-		console.log("Timer");
-		garage = DeviceManager.isDeviceOn("Garage Door");
-		motion = DeviceManager.isDeviceOn("Presence");		
-		console.log("Garage Open: " + garage +" Motion " +motion);
-		
-		},15000);
-
-*/

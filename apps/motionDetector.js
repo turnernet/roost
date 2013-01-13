@@ -2,7 +2,9 @@ var deviceManager = require("../devices/DeviceManager");
 
 
 
-var MotionDetector = function MotionDetector(){
+var MotionDetector = function MotionDetector(app){
+	console.log("motion detector app started");
+	this.app = app;
 	this.alias = "Motion Detector";
 	this.motionDetected = function(){
 		return	deviceManager.isDeviceOn(this.alias);
@@ -12,15 +14,18 @@ var MotionDetector = function MotionDetector(){
 		console.log("motion detector state change: " + state);
 	}.bind(this));
 
+	this.getRequest = function(resource,params){
+		if(resource=="detected"){
+			enabled = this.motionDetected();
+			result={"motion":enabled};
+			return result;
+		}
+		else{
+			throw 'bad resource'
+		}
+		
+	};
 
 };
 
-MotionDetector.instance=null;
-   
-MotionDetector.getInstance = function(){
-      if(this.instance === null){
-        this.instance = new MotionDetector();
-      }
-      return this.instance;
-}
-module.exports = MotionDetector.getInstance();
+module.exports = MotionDetector;

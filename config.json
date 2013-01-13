@@ -38,14 +38,15 @@
 	],
   "applications" :[
 	{
-	"name":"Garage Door",
 	"appname":"garage",
 	"open_alert_timer":900000
 	},
 	{
-	"name":"Motion Detection",
 	"appname":"motion",
 	"holddown_timer":600000
+	},
+	{
+	"appname":"humidifier"
 	}
 	]	
 }

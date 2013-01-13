@@ -1,9 +1,17 @@
-var humidifier = require('../apps/humidifier');
-var garageDoor = require('../apps/garageDoor');
-var motionDetector = require('../apps/motionDetector');
-
+var appManager = require('../apps/AppManager');
 
 exports.getAppResource=function(req,res,next){
+	
+	console.log("getAppResource " + req.params.app);
+	try{
+		result=appManager.appGetRequest(req.params.app,req.params.resource,req.params);
+		res.json(result);
+	}
+	catch(err){
+		res.statusCode=404;
+		res.send(err);
+	}
+/*
 	if(req.params.app == "humidifier" && req.params.resource == "enabled"){
 		enabled = humidifier.isActive();
 		result={"enabled":enabled};
@@ -25,6 +33,7 @@ exports.getAppResource=function(req,res,next){
 		res.send("bad app");
 		
 	}
+*/
 };
 
 
