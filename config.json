@@ -15,21 +15,23 @@
 	{
 	"bus":"gpio",
 	"direction":"in",
-	"address": "23",
-	"alias":"Garage Door",
-	"sense":"active_high"
+	"address": 23,
+	"alias":"Garage Door Sensor",
+	"sense":"active_high",
+	"debounce": 2000
 	},
 	{
 	"bus":"gpio",
 	"direction":"in",
-	"address": "24",
-	"alias":"Presence",
-	"sense":"active_high"
+	"address": 24,
+	"alias":"Motion Detector",
+	"sense":"active_high",
+	"debounce": 5000
 	},
 	{
 	"bus":"gpio",
 	"direction":"out",
-	"address": "25",
+	"address": 25,
 	"alias":"Humidifier",
 	"sense": "active_high"
 	}

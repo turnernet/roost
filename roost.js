@@ -1,31 +1,31 @@
 var express = require('express');
 var devices= require('./routes/devices');
+var apps = require('./routes/apps');
 var DeviceManager = require('./services/DeviceManager/DeviceManager');
-var config = require('./config.json');
-var app = express();
+var api = express();
 
-DeviceManager.setDevices(config.devices);
+api.configure(function () {
+	api.use(express.logger('dev')); /* 'default', 'short', 'tiny', 'dev' */
+	api.use(express.bodyParser());
+});
 
+api.get('/devices/ow', devices.findAllRequest,devices.findAllResponse);
+api.get('/devices/ow/:id',devices.findByIdRequest,devices.findByIdResponse);
+api.get('/devices/ow/:id/:property',devices.readRequest,devices.readResponse);
+
+api.get('/app/:app/:resource',apps.getAppResource);
+api.put('/app/:app/:resource',apps.putAppResource);
+
+api.listen(8000);
  
-
-app.get('/devices/ow', devices.findAllRequest,devices.findAllResponse);
-app.get('/devices/ow/:id',devices.findByIdRequest,devices.findByIdResponse);
-app.get('/devices/ow/:id/:property',devices.readRequest,devices.readResponse);
-
-app.get('/devices/gpio/:id',devices.gpioOpenRequest,devices.gpioReadRequest,devices.gpioReadResponse);
-
-app.get('/status',devices.statusOpenRequest,devices.statusReadRequest,devices.statusReadResponse);  // this is a temp hack for a status page, should be in own module
-
-app.listen(8000);
-
 console.log('Listening on port 8000...');
 
 
 setTimeout( function(){
-	DeviceManager.setDeviceOn("Humidifier",false);
+	DeviceManager.setDeviceOn("Humidifier",true);
 }, 6000);
 
-
+/*
 setInterval( function(){
 		console.log("Timer");
 		garage = DeviceManager.isDeviceOn("Garage Door");
@@ -33,3 +33,5 @@ setInterval( function(){
 		console.log("Garage Open: " + garage +" Motion " +motion);
 		
 		},15000);
+
+*/

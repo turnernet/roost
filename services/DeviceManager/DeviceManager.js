@@ -7,31 +7,14 @@ var NodeCache = require("nodecache");
 var cache = new NodeCache( { stdTTL: 600, checkperiod: 300 });*/
 
 //
+var config = require('../../config.json');
+
 var EventEmitter = require('events').EventEmitter;
-var GpioDevice = require('./gpioDevice');
-var OwDevice = require('./owDevice');
+var DeviceFactory = require('./DeviceFactory.js');
 
 
 
-/*
-// DeviceFactory 
-//
-*/
-function DeviceFactory(){}
-DeviceFactory.prototype.deviceClass = OwDevice;
-DeviceFactory.prototype.createDevice = function(device){
-	if(device.bus == "1wire"){
-		this.deviceClass = OwDevice;
-	}
-	else if (device.bus == "gpio"){
-		this.deviceClass = GpioDevice;
-	}
-	else{
-		return null;
-	}
-	
-	return new this.deviceClass( device );	
-};
+
 
 /* 
 // DeviceManager
@@ -41,7 +24,7 @@ var DeviceManager = function DeviceManager(){
   
   this.devices =[];
   EventEmitter.call(this);
-
+/*
   this._temperaturePoller = setInterval( function(){
 		console.log("DeviceManager temperaturePoller!!");
 		console.log(this.devices.length)
@@ -52,9 +35,9 @@ var DeviceManager = function DeviceManager(){
 		}
 		}.bind(this)
 		,3000);
-  
+  */
   // setDevices	
-  this.setDevices = function (deviceList){
+  this._setDevices = function (deviceList){
 	  var deviceFactory = new DeviceFactory();
 	  for(var i in deviceList){
 		  this.devices.push(deviceFactory.createDevice(deviceList[i]));
@@ -62,6 +45,17 @@ var DeviceManager = function DeviceManager(){
 	  console.log("setDevices: " + this.devices.length)
 	  
 	};
+
+  this.onDeviceEvent = function(alias,event,callback){
+	device = this._findDevice(alias);
+
+	if(device == null || device.on ==null){
+		throw "Device error: " + device + " " + device.on;
+	}
+	console.log("DeviceManager.onDeviceEvent " + alias + " " +event);
+	device.on(event,callback);
+  }	
+	
 
   this._findDevice = function(alias){
 	  var device =null;
@@ -91,6 +85,8 @@ var DeviceManager = function DeviceManager(){
 	  }
 	  return device.isOn();	  
 	  };
+
+  this._setDevices(config.devices);
 	  
   };
   

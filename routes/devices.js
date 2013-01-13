@@ -22,8 +22,7 @@ exports.findAllRequest=function(req,res,next){
 exports.findAllResponse=function(req,res,next){
 	console.log("findAllResponse: " + res.locals.data);
 	res.json(res.locals.data)
-}
-
+};
 /*******
  * findById
  * 
@@ -37,7 +36,7 @@ exports.findByIdRequest = function(req, res,next) {
 };
 exports.findByIdResponse=function(req,res,next){	
 	res.json(res.locals.data)
-}
+};
 
 /********
  *  read
@@ -54,58 +53,5 @@ exports.readResponse=function(req,res,next){
 	result={id:req.params.id};
 	result[req.params.property]=res.locals.data;
 	res.json(result);
-}
-
-/*** gpio read 
- * 
- * 
- */
-exports.gpioOpenRequest = function(req,res,next){
-	gpio.open(req.params.id , "input", function(err) {
-		next();	
-});
-};
-
-exports.gpioReadRequest = function(req,res,next){
-	gpio.read(req.params.id ,  function(err,value) {
-		gpio.close(req.params.id)
-		res.locals.data=value;
-		next();
-});
-};
-	
-exports.gpioReadResponse = function(req,res,next){      
-		result={id:req.params.id};
-		result["value"]=res.locals.data;
-		res.json(result);
-};
-
-exports.statusOpenRequest = function(req,res,next){
-	gpio.open("16" , "input", function(err) {
-		console.log("open: " + err);
-		next();	
-});
-};
-
-exports.statusReadRequest = function(req,res,next){
-	gpio.read("16",  function(err,value) {
-		console.log("read: " + err + "  " + value);
-		gpio.close("16")
-		res.locals.data=value;
-		next();
-});
-};
-	
-exports.statusReadResponse = function(req,res,next){      
-		result={id:"Garage Door"};
-		
-		
-		if(res.locals.data=="0"){
-			value="CLOSED";
-		}
-		else{
-			value= "OPENED"
-		}
-		res.end("GARAGE DOOR: " + value);
 };
 
