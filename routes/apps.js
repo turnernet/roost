@@ -1,6 +1,6 @@
-var humidifier = require('../app/humidifier');
-var garageDoor = require('../app/garageDoor');
-var motionDetector = require('../app/motionDetector');
+var humidifier = require('../apps/humidifier');
+var garageDoor = require('../apps/garageDoor');
+var motionDetector = require('../apps/motionDetector');
 
 
 exports.getAppResource=function(req,res,next){
