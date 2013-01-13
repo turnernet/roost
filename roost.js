@@ -1,7 +1,7 @@
 var express = require('express');
 var devices= require('./routes/devices');
 var apps = require('./routes/apps');
-var DeviceManager = require('./services/DeviceManager/DeviceManager');
+var DeviceManager = require('./devices/DeviceManager');
 var api = express();
 
 api.configure(function () {

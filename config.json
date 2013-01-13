@@ -1,8 +1,8 @@
 {
   "devices": [
 	{
-    "bus": "1wire",
-    "address": "/28.D6AA2B040000",
+	"bus": "1wire",
+        "address": "/28.D6AA2B040000",
 	"direction": "in",
 	"alias": "basement1"
 	},
@@ -35,5 +35,17 @@
 	"alias":"Humidifier",
 	"sense": "active_high"
 	}
-	]
+	],
+  "applications" :[
+	{
+	"name":"Garage Door",
+	"appname":"garage",
+	"open_alert_timer":900000
+	},
+	{
+	"name":"Motion Detection",
+	"appname":"motion",
+	"holddown_timer":600000
+	}
+	]	
 }

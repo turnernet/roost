@@ -1,4 +1,4 @@
-var owservice = require("../services/owfs/owservice")
+var owservice = require("../services/owservice")
 var gpio = require("pi-gpio");
 
 

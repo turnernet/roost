@@ -7,7 +7,7 @@ var NodeCache = require("nodecache");
 var cache = new NodeCache( { stdTTL: 600, checkperiod: 300 });*/
 
 //
-var config = require('../../config.json');
+var config = require('../config.json');
 
 var EventEmitter = require('events').EventEmitter;
 var DeviceFactory = require('./DeviceFactory.js');

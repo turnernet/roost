@@ -1,4 +1,4 @@
-var deviceManager = require("../services/DeviceManager/DeviceManager");
+var deviceManager = require("../devices/DeviceManager");
 
 var Humidifier = function Humidifier(){
 	this._timer = setInterval(function(){
