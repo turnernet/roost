@@ -2,6 +2,13 @@ var express = require('express');
 var devices= require('./routes/devices');
 var apps = require('./routes/apps');
 var api = express();
+//var logger = require('./services/logger');
+//var devicePoller=require('./services/devicepoller');
+
+
+process.on('uncaughtException', function(err) {
+  console.log(err);
+});
 
 api.configure(function () {
 	api.use(express.logger('dev')); /* 'default', 'short', 'tiny', 'dev' */
@@ -16,6 +23,7 @@ api.get('/apps/:app/:resource',apps.getAppResource);
 api.put('/apps/:app/:resource',apps.putAppResource);
 
 api.listen(8000);
+ 
  
 console.log('Listening on port 8000...');
 

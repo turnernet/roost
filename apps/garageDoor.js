@@ -1,12 +1,11 @@
 var deviceManager = require("../devices/DeviceManager");
 
-
-
 var GarageDoor = function GarageDoor(app){
          console.log("GarageDoor app started");
 	this.app = app;
+	this.device=app.device;
 	this.isOpen = function(){
-		return	deviceManager.isDeviceOn("Garage Door Sensor");
+		return	deviceManager.isDeviceOn(this.device);
 	};
 
  	this.controlDoor = function(open){
@@ -23,7 +22,13 @@ var GarageDoor = function GarageDoor(app){
 		}
 
 	};
+	
+	deviceManager.onDeviceEvent(this.device,"stateChange", function(state){
+		console.log(new Date() +" Garage Door state change: " + state);
+		// TODO: generate on event
 
+			
+	}.bind(this));
 
 };
 

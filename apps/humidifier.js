@@ -3,16 +3,19 @@ var deviceManager = require("../devices/DeviceManager");
 var Humidifier = function Humidifier(app){
 	this.app = app;
         console.log("Humidifer app started");
+	this.device=app.device;
+		
+        /*
 	this._timer = setInterval(function(){
 		this.setActive(!this.isActive());
 	}.bind(this),60000*60*3);
-
+*/
 	this.isActive = function(){
-		return	deviceManager.isDeviceOn("Humidifier");
+		return	deviceManager.isDeviceOn(this.device);
 	};
 
 	this.setActive = function(on){
-		return deviceManager.setDeviceOn("Humidifier",on);
+		return deviceManager.setDeviceOn(this.device,on);
 	};
 
 	this.getRequest = function(resource,params){
@@ -27,7 +30,7 @@ var Humidifier = function Humidifier(app){
 		}
 		
 	};
-	this.setActive(false);
+	this.setActive(true);
 };
 
 module.exports = Humidifier

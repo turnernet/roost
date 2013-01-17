@@ -2,15 +2,21 @@
   "devices": [
 	{
 	"bus": "1wire",
-        "address": "/28.D6AA2B040000",
+    "address": "/28.D6AA2B040000",
 	"direction": "in",
-	"alias": "basement1"
+	"alias": "Basement 1",
+	"readpath":"/temperature",
+	"polling_interval":60000,
+	"key":"basement1"
 	},
 	{
 	"bus": "1wire",
 	"direction": "in",
 	"address": "/10.AF4305010800",
-	"alias": "basement2"
+	"alias": "Basement 2",
+	"readpath":"/temperature",
+	"polling_interval":600000,
+	"key":"basement2"
 	},
 	{
 	"bus":"gpio",
@@ -18,7 +24,8 @@
 	"address": 23,
 	"alias":"Garage Door Sensor",
 	"sense":"active_high",
-	"debounce": 2000
+	"debounce": 2000,
+	"key":"garageDoorOpen"
 	},
 	{
 	"bus":"gpio",
@@ -26,27 +33,31 @@
 	"address": 24,
 	"alias":"Motion Detector",
 	"sense":"active_high",
-	"debounce": 5000
+	"key":"motionDetected"
 	},
 	{
 	"bus":"gpio",
 	"direction":"out",
 	"address": 25,
 	"alias":"Humidifier",
-	"sense": "active_high"
+	"sense": "active_high",
+	"key":"humidifierOn"
 	}
 	],
   "applications" :[
 	{
 	"appname":"garage",
-	"open_alert_timer":900000
+	"open_alert_timer":900000,
+	"device":"Garage Door Sensor"
 	},
 	{
 	"appname":"motion",
-	"holddown_timer":600000
+	"holddown_timer":600000,
+	"device":"Motion Detector"
 	},
 	{
-	"appname":"humidifier"
+	"appname":"humidifier",
+	"device":"Humidifier"
 	}
 	]	
 }

@@ -12,10 +12,6 @@ var config = require('../config.json');
 var EventEmitter = require('events').EventEmitter;
 var DeviceFactory = require('./DeviceFactory.js');
 
-
-
-
-
 /* 
 // DeviceManager
 //
@@ -24,18 +20,25 @@ var DeviceManager = function DeviceManager(){
   
   this.devices =[];
   EventEmitter.call(this);
-/*
-  this._temperaturePoller = setInterval( function(){
-		console.log("DeviceManager temperaturePoller!!");
-		console.log(this.devices.length)
+
+  this.readAll = function(){
+		console.log("ReadAll");
+
+		result=[];
 		for(i in this.devices){
+			key=this.devices[i].device.key;
 			if(this.devices[i].isOn){
-				console.log(this.devices[i].device.alias + " " + this.devices[i].isOn());
+				console.log(key + " " + this.devices[i].isOn());
+				result[key]=this.devices[i].isOn();
+			}
+			else if(this.devices[i].read){
+				console.log(key + " " + this.devices[i].read());
+				result[key]=this.devices[i].read();
 			}
 		}
-		}.bind(this)
-		,3000);
-  */
+		return result;
+	};
+
   // setDevices	
   this._setDevices = function (deviceList){
 	  var deviceFactory = new DeviceFactory();

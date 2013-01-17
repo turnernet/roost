@@ -24,7 +24,7 @@ var GpioDevice = function (device){
 	if(this.device.direction == "in"){
 		this.isOn = function(){		
 			value = this._applySenseTransform(this.gpio1.readSync());
-			return value == true;		
+			return value;		
 		};
 		// asynchronous change detection
 		this.interrupt =function (err,value){
@@ -62,7 +62,8 @@ var GpioDevice = function (device){
 			}
 			else{
 				value = 0;
-			}		
+			}	
+			this.cachedValue=value;
 			console.log("setting  " + this.device.address + " to " + value);
 			this.gpio1.write(value, function(err) { // Asynchronous write. Synchronous doesn't work?
 				if (err) throw err;
