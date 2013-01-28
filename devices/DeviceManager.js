@@ -49,29 +49,30 @@ var DeviceManager = function DeviceManager(){
 	  
 	};
 
-  this.onDeviceEvent = function(alias,event,callback){
-	device = this._findDevice(alias);
+  this.onDeviceEvent = function(key,event,callback){
+	console.log("ondevice event key: " + key);
+	device = this._findDevice(key);
 
 	if(device == null || device.on ==null){
 		throw "Device error: " + device + " " + device.on;
 	}
-	console.log("DeviceManager.onDeviceEvent " + alias + " " +event);
+	console.log("DeviceManager.onDeviceEvent " + key + " " +event);
 	device.on(event,callback);
   }	
 	
 
-  this._findDevice = function(alias){
+  this._findDevice = function(key){
 	  var device =null;
 	  for(var i in this.devices){
-		  if(this.devices[i].device.alias == alias){
+		  if(this.devices[i].device.key == key){
 			  device = this.devices[i];
 		  }
 	  }
 	  return device;
 	  };
 	  
-   this.setDeviceOn = function (alias,on){
-	  var device = this._findDevice(alias);
+   this.setDeviceOn = function (key,on){
+	  var device = this._findDevice(key);
 	  if(device == null || device.setOn == null){
 		  throw "Device error: " + device;
 		  
@@ -80,8 +81,8 @@ var DeviceManager = function DeviceManager(){
 	  };
 
   
-   this.isDeviceOn = function (alias){
-	  var device = this._findDevice(alias);
+   this.isDeviceOn = function (key){
+	  var device = this._findDevice(key);
 	  if(device == null || device.isOn == null){
 		  throw "Device error: " + device;
 		  

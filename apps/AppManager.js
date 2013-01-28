@@ -20,20 +20,20 @@ var AppManager = function AppManager(){
 	  
 	};
 
-  this.onAppEvent = function(alias,event,callback){
-	app = this._findApp(alias);
+  this.onAppEvent = function(name,event,callback){
+	app = this._findApp(name);
 
 	if(app == null || app.on ==null){
 		throw "App error: " + app + " " + app.on;
 	}
-	console.log("AppManager.onAppEvent " + alias + " " +event);
+	console.log("AppManager.onAppEvent " + name + " " +event);
 	app.on(event,callback);
   }	
 	
 
   this._findApp = function(appname){
 	  console.log("find app " + appname);
-	  console.log(this.apps);
+	  //console.log(this.apps);
 	  var app =null;
 	  for(var i in this.apps){
 		  if(this.apps[i].app.appname && this.apps[i].app.appname == appname){
@@ -44,7 +44,7 @@ var AppManager = function AppManager(){
 	  return app;
 	  };
 
-  this.appGetRequest=function(appname,resource,params){
+  this.appGetRequest=function(appname,params){
 
 	console.log("AppManager getRequest " + appname);
 	var app = this._findApp(appname);
@@ -52,17 +52,24 @@ var AppManager = function AppManager(){
 	if(app==null){
 		throw "Appname error";
 	}
-	return app.getRequest(resource,params);
+	return app.getRequest(params);
 
   };
 
-  this.appPutRequest=function(appname,resource,body){
+  this.appPutRequest=function(appname,body){
+	
+	var app = this._findApp(appname);
+	console.log("AppManager putRequest app: " + app);
+	if(app==null){
+		throw "Appname error";
+	}
+	return app.putRequest(body);
 
-  };
+	};
 
-  this._setApps(config.applications);
+	this._setApps(config.applications);
 	  
-  };
+	};
   
 AppManager.prototype.__proto__ = EventEmitter.prototype;
 AppManager.instance=null;

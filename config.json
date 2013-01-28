@@ -1,10 +1,19 @@
 {
   "devices": [
+  {
+	"bus": "1wire",
+    "address": "/28.7E9A2B040000",
+	"direction": "in",
+	"name": "Kitchen",
+	"readpath":"/temperature",
+	"polling_interval":30000,
+	"key":"Kitchen"
+	},
 	{
 	"bus": "1wire",
     "address": "/28.D6AA2B040000",
 	"direction": "in",
-	"alias": "Basement 1",
+	"name": "Basement 1",
 	"readpath":"/temperature",
 	"polling_interval":60000,
 	"key":"basement1"
@@ -13,7 +22,7 @@
 	"bus": "1wire",
 	"direction": "in",
 	"address": "/10.AF4305010800",
-	"alias": "Basement 2",
+	"name": "Basement 2",
 	"readpath":"/temperature",
 	"polling_interval":600000,
 	"key":"basement2"
@@ -22,7 +31,7 @@
 	"bus":"gpio",
 	"direction":"in",
 	"address": 23,
-	"alias":"Garage Door Sensor",
+	"name":"Garage Door Sensor",
 	"sense":"active_high",
 	"debounce": 2000,
 	"key":"garageDoorOpen"
@@ -31,15 +40,39 @@
 	"bus":"gpio",
 	"direction":"in",
 	"address": 24,
-	"alias":"Motion Detector",
+	"name":"Motion Detector",
 	"sense":"active_high",
 	"key":"motionDetected"
 	},
 	{
 	"bus":"gpio",
 	"direction":"out",
+	"address": 7,
+	"name":"Heat",
+	"sense": "active_low",
+	"key":"heatOn"
+	},
+	{
+	"bus":"gpio",
+	"direction":"out",
+	"address": 8,
+	"name":"High Fan",
+	"sense": "active_low",
+	"key":"fanHigh"
+	},
+	{
+	"bus":"gpio",
+	"direction":"out",
+	"address": 18,
+	"name":"Low Fan",
+	"sense": "active_low",
+	"key":"fanLow"
+	},
+	{
+	"bus":"gpio",
+	"direction":"out",
 	"address": 25,
-	"alias":"Humidifier",
+	"name":"Humidifier",
 	"sense": "active_high",
 	"key":"humidifierOn"
 	}
@@ -48,16 +81,23 @@
 	{
 	"appname":"garage",
 	"open_alert_timer":900000,
-	"device":"Garage Door Sensor"
+	"devicekey":"garageDoorOpen"
 	},
 	{
 	"appname":"motion",
-	"holddown_timer":600000,
-	"device":"Motion Detector"
+	"holddown_timer":180000,
+	"devicekey":"motionDetected"
 	},
 	{
 	"appname":"humidifier",
-	"device":"Humidifier"
+	"devicekey":"humidifierOn"
+	},
+	{
+	"appname":"hvac",
+	"heatDeviceKey":"heatOn",
+	"fanLowDeviceKey":"fanLow",
+	"fanHighDeviceKey":"fanHigh"
 	}
 	]	
+	
 }

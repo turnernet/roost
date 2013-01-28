@@ -5,6 +5,7 @@
 var Humidifier = require('./humidifier');
 var GarageDoor = require('./garageDoor');
 var MotionDetector = require('./motionDetector');
+var HVAC = require('./hvac');
 
 var AppFactory = function(){}
 AppFactory.prototype.createApp = function(app){
@@ -18,6 +19,9 @@ AppFactory.prototype.createApp = function(app){
 	else if(app.appname=="humidifier"){
 		this.appClass=Humidifier;
 	}
+	else if(app.appname=="hvac"){
+		this.appClass=HVAC;
+	}	
 	else{
 	
 		return null;

@@ -4,7 +4,7 @@ exports.getAppResource=function(req,res,next){
 	
 	console.log("getAppResource " + req.params.app);
 	try{
-		result=appManager.appGetRequest(req.params.app,req.params.resource,req.params);
+		result=appManager.appGetRequest(req.params.app,req.params);
 		res.json(result);
 	}
 	catch(err){
@@ -36,14 +36,15 @@ exports.getAppResource=function(req,res,next){
 */
 };
 
-
-exports.putAppResource=function(req,res,next){
-	if(req.params.app == "humidifier" && req.params.resource == "enabled"){
-		humidifier.setActive(req.body.enabled);
-		res.send("set humidifer enabled: " + req.body.enabled);
+exports.putAppResource=function(req,res){
+console.log(JSON.stringify(req.body));
+	try{	
+		result=appManager.appPutRequest(req.params.app,req.body);
+		res.json(result);
 	}
-	else{
+	catch(err){
 		res.statusCode=404;
-		res.send("bad request");	
+		console.log(err);
+		res.send(err);
 	}
 };

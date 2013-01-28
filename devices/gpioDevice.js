@@ -12,6 +12,7 @@ var GpioDevice = function (device){
 	this.isOn = null;
 	this.setOn = null;
 	this.cachedState = null;
+	this._debounceTimer=null;
 
 	this._applySenseTransform = function(value){
 		if(this.device.sense == "active_low"){
@@ -24,7 +25,12 @@ var GpioDevice = function (device){
 	if(this.device.direction == "in"){
 		this.isOn = function(){		
 			value = this._applySenseTransform(this.gpio1.readSync());
-			return value;		
+			if(value){
+				return true;
+			}
+			else{
+				return false;
+			}
 		};
 		// asynchronous change detection
 		this.interrupt =function (err,value){
@@ -34,7 +40,11 @@ var GpioDevice = function (device){
 
 			// implement debounce feature if required
 			if(this.device.debounce){
-				setTimeout(function(){
+				if(this._debounceTimer!=null){
+					clearTimeout(this._debounceTimer);
+					this._debounceTimer=null;
+				}
+				this._debounceTimer=setTimeout(function(){
 					value=this.isOn();
 					if(this.cachedState == value){
 						console.log(new Date() + " "+this.device.alias+"  debounced: value is " + value);
@@ -63,7 +73,6 @@ var GpioDevice = function (device){
 			else{
 				value = 0;
 			}	
-			this.cachedValue=value;
 			console.log("setting  " + this.device.address + " to " + value);
 			this.gpio1.write(value, function(err) { // Asynchronous write. Synchronous doesn't work?
 				if (err) throw err;
@@ -72,7 +81,7 @@ var GpioDevice = function (device){
 		this.isOn = function(){
 			return this.cachedValue;
 		};		
-
+	this.setOn(false);
 }
 	
 }
