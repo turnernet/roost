@@ -1,6 +1,7 @@
 var deviceManager = require("../devices/DeviceManager");
 
 var Humidifier = function Humidifier(app){
+    "use strict";
 	this.app = app;
     console.log("Humidifer app started");
 	this.device=app.devicekey;
@@ -15,16 +16,14 @@ var Humidifier = function Humidifier(app){
 
 	this.getRequest = function(params){
 		console.log("Humidifier.getRequest ");
-		result={"enabled":this.isActive()};
-		return result;
-	
+		return {"enabled":this.isActive()};
 	};
 	
 	this.putRequest = function(body){
 		console.log("Humidifier.putRequest " +  JSON.stringify(body))	;		
-		enabled = body.enabled;
+		var enabled = body.enabled;
 		
-		if(enabled != undefined){
+		if(enabled !== undefined){
 			console.log("Setting Humidifier: " + enabled);
 			this.setActive(enabled);
 		}
@@ -34,5 +33,5 @@ var Humidifier = function Humidifier(app){
 	this.setActive(false);
 };
 
-module.exports = Humidifier
+module.exports = Humidifier;
 

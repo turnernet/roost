@@ -7,14 +7,27 @@ var devicePoller=require('./services/devicepoller');
 
 
 process.on('uncaughtException', function(err) {
+  "use strict";
   console.log(err);
 });
 
+//CORS middleware
+var allowCrossDomain = function(req, res, next) {
+    "use strict";
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+
+    next();
+};
+
 api.configure(function () {
+    "use strict";
 	api.use(express.logger('dev')); /* 'default', 'short', 'tiny', 'dev' */
 	api.use(require('connect').bodyParser());
-	api.use(express.static(__dirname + '/public'));
+	//api.use(allowCrossDomain);
 	api.use(api.router);
+	api.use(express.static(__dirname + '/public'));
 });
 
 api.get('/devices/ow', devices.findAllRequest,devices.findAllResponse);
