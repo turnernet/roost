@@ -11,36 +11,13 @@ exports.getAppResource = function (req, res, next) {
         res.statusCode = 404;
         res.send(err);
     }
-    /*
-     if(req.params.app == "humidifier" && req.params.resource == "enabled"){
-     enabled = humidifier.isActive();
-     result={"enabled":enabled};
-     res.json(result);
-     }
-
-     else if(req.params.app == "garage" && req.params.resource == "door"){
-     opened = garageDoor.isOpen();
-     result={"opened":opened};
-     res.json(result);
-     }
-     else if(req.params.app == "motion" && req.params.resource == "detector"){
-     motion = motionDetector.motionDetected();
-     result={"motionDetected":motion};
-     res.json(result);
-     }
-     else{
-     res.statusCode=404;
-     res.send("bad app");
-
-     }
-     */
 };
 
-exports.putAppResource = function (req, res) {
+exports.postAppResource = function (req, res) {
     "use strict";
     console.log(JSON.stringify(req.body));
     try {
-        var result = appManager.appPutRequest(req.params.app, req.body);
+        var result = appManager.appPostRequest(req.params.app, req.body);
         res.json(result);
     }
     catch (err) {

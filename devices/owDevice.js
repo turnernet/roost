@@ -1,15 +1,18 @@
 var owservice = require("../services/owservice");
-
+var util = require("util");
 
 var OwDevice = function (device) {
     "use strict";
     this.device = device;
     this._value = null;
-
+	events.EventEmitter.call(this);  // inherit EventEmitter
+	
     this._read = function () {
         owservice.read(this.device.address + this.device.readpath, function (path, value) {
-            console.log(path + " " + value);
             this._value = value;
+			this.device.value = value;
+			this.device.updateTime= new Date();
+			this.emit("device-value", this.device);
         }.bind(this));
     }.bind(this);
 
@@ -25,12 +28,13 @@ var OwDevice = function (device) {
     this.read = function () {
         return this._value;
     };
-
-
+	
     this.write = null;
     this._read();
     console.log("1wire device");
 
 };
+
+util.inherits(OwDevice, events.EventEmitter);
 module.exports = OwDevice;
 

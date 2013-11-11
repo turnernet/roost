@@ -11,7 +11,7 @@
 	},
 	{
 	"bus": "1wire",
-    "address": "/28.D6AA2B040000",
+    "address": "/28.D6AA2B040000", 
 	"direction": "in",
 	"name": "Basement 1",
 	"readpath":"/temperature",
@@ -21,11 +21,38 @@
 	{
 	"bus": "1wire",
 	"direction": "in",
-	"address": "/10.AF4305010800",
-	"name": "Basement 2",
+	"address": "/10.5A3D54020800",
+	"name": "Basement 3",
 	"readpath":"/temperature",
-	"polling_interval":600000,
-	"key":"basement2"
+	"polling_interval":60000,
+	"key":"basement3"
+	},
+	{
+	"bus": "1wire",
+	"direction": "in",
+	"address": "/10.55DA5B020800",
+	"name": "Basement 4",
+	"readpath":"/temperature",
+	"polling_interval":60000,
+	"key":"basement4"
+	},
+	{
+	"bus": "1wire",
+	"direction": "in",
+	"address": "/10.FDBF5B020800",
+	"name": "Basement 5",
+	"readpath":"/temperature",
+	"polling_interval":60000,
+	"key":"basement5"
+	},	
+		{
+	"bus": "1wire",
+	"direction": "in",
+	"address": "/10.FDBF5B020800",
+	"name": "Outside",
+	"readpath":"/temperature",
+	"polling_interval":60000,
+	"key":"Outside"
 	},
 	{
 	"bus":"gpio",
@@ -96,7 +123,8 @@
 	"appname":"hvac",
 	"heatDeviceKey":"heatOn",
 	"fanLowDeviceKey":"fanLow",
-	"fanHighDeviceKey":"fanHigh"
+	"fanHighDeviceKey":"fanHigh",
+	"temperatureDeviceKeys": ["Kitchen","basement1","basement3","basement4","basement5","Outside"]
 	}
 	]	
 	

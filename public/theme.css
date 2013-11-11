@@ -1,0 +1,19 @@
+body {
+  padding-top: 70px;
+  padding-bottom: 30px;
+}
+
+.theme-dropdown .dropdown-menu {
+  display: block;
+  position: static;
+  margin-bottom: 20px;
+}
+
+.theme-showcase > p > .btn {
+  margin: 5px 0;
+ -webkit-transition: all 1.05s ease;
+ -moz-transition: all 1.05s ease;
+ -o-transition: all 1.05s ease;
+ transition: all 1.05s ease;
+}
+

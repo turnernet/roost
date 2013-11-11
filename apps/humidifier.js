@@ -1,9 +1,15 @@
 var deviceManager = require("../devices/DeviceManager");
+var events = require("events");
+var util = require("util");
+var appBase = require("./app");
 
 var Humidifier = function Humidifier(app){
     "use strict";
+	//events.EventEmitter.call(this);  // inherit EventEmitter
+	appBase.call(this);
+	
 	this.app = app;
-    console.log("Humidifer app started");
+    console.log("Humidifier app started");
 	this.device=app.devicekey;
 		
 	this.isActive = function(){
@@ -19,10 +25,8 @@ var Humidifier = function Humidifier(app){
 		return {"enabled":this.isActive()};
 	};
 	
-	this.putRequest = function(body){
-		console.log("Humidifier.putRequest " +  JSON.stringify(body))	;		
-		var enabled = body.enabled;
-		
+	this.postRequest = function(body){
+		var enabled = body.enabled
 		if(enabled !== undefined){
 			console.log("Setting Humidifier: " + enabled);
 			this.setActive(enabled);
@@ -30,8 +34,14 @@ var Humidifier = function Humidifier(app){
 		return "ok";
 	};
 	
+	deviceManager.onDeviceEvent(app.devicekey,"device-state", function(state){
+		console.log("humidiferOnDeviceEvent",state);
+		this.emit("humidifierState",state);
+	}.bind(this));
+	
 	this.setActive(false);
 };
-
+//util.inherits(Humidifier, events.EventEmitter);
+util.inherits(Humidifier, appBase);
 module.exports = Humidifier;
 

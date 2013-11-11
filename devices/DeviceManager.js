@@ -61,6 +61,9 @@ var DeviceManager = function DeviceManager() {
         device.on(event, callback);
     };
 
+	this.getDevice = function (key){
+		return this._findDevice(key);
+	}
 
     this._findDevice = function (key) {
         var device = null;

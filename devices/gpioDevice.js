@@ -66,26 +66,37 @@ var GpioDevice = function (device) {
         this.setOn = function (on) {
             console.log("on is: " + on);
             var value;
-            this.cachedValue = on;
+			var temp=on;
+			
             if (this.device.sense === "active_low") {
-                on = !on;
+                temp = !on;
             }
-            if (on) {
+			if (temp) {
                 value = 1;
             }
             else {
                 value = 0;
             }
+
             console.log("setting  " + this.device.address + " to " + value);
+		
+			if(this.cachedValue !== on){
+				this.cachedValue = on;
+				console.log("device.setOn: "+this.device.name+" on: " + this.cachedValue);
+				this.emit("device-state",on);	
+			}
             this.gpio1.write(value, function (err) { // Asynchronous write. Synchronous doesn't work?
                 if (err) {
                     throw err;
                 }
-            });
+            }.bind(this));
+
         };
         this.isOn = function () {
+			console.log("device.isOn: "+this.device.name+" on: " + this.cachedValue);
             return this.cachedValue;
         };
+		this.cachedValue=false;
         this.setOn(false);
     }
 
