@@ -1,11 +1,10 @@
 var deviceManager = require("../devices/DeviceManager");
-var events = require("events");
 var util = require("util");
 var appBase = require("./app");
 
 var Humidifier = function Humidifier(app){
     "use strict";
-	//events.EventEmitter.call(this);  // inherit EventEmitter
+
 	appBase.call(this);
 	
 	this.app = app;
@@ -41,7 +40,7 @@ var Humidifier = function Humidifier(app){
 	
 	this.setActive(false);
 };
-//util.inherits(Humidifier, events.EventEmitter);
+
 util.inherits(Humidifier, appBase);
 module.exports = Humidifier;
 

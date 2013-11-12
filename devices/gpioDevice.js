@@ -18,19 +18,18 @@ var GpioDevice = function (device) {
         if (this.device.sense === "active_low") {
             value = !value;
         }
-        return value;
+        if (value) {
+            return true;
+        }
+        else {
+            return false;
+        } 
     };
 
 
     if (this.device.direction === "in") {
         this.isOn = function () {
-            var value = this._applySenseTransform(this.gpio1.readSync());
-            if (value) {
-                return true;
-            }
-            else {
-                return false;
-            }
+            return this._applySenseTransform(this.gpio1.readSync());
         };
         // asynchronous change detection
         this.interrupt = function (err, value) {
@@ -42,12 +41,16 @@ var GpioDevice = function (device) {
 
             // implement debounce feature if required
             if (this.device.debounce) {
+				console.log("implement debounce timer");
                 if (this._debounceTimer !== null) {
+					console.log("cancelling debounce timer");
                     clearTimeout(this._debounceTimer);
                     this._debounceTimer = null;
                 }
+				console.log("setting debounce timer cachedState: ",this.cachedState);
                 this._debounceTimer = setTimeout(function () {
                     var value = this.isOn();
+					console.log("debounceTimer fired, value is: " + value + "cachedState: " + this.cachedState);
                     if (this.cachedState === value) {
                         console.log(new Date() + " " + this.device.alias + "  debounced: value is " + value);
                         this.emit("stateChange", value);

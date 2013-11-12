@@ -1,8 +1,11 @@
 var deviceManager = require("../devices/DeviceManager");
+var appBase = require("./app");
 
 var GarageDoor = function GarageDoor(app){
     "use strict";
     console.log("GarageDoor app started device: " +app.device);
+	
+	appBase.call(this);
 	this.app = app;
 	this.device=app.devicekey;
 	this._openTimer=null;
@@ -21,6 +24,7 @@ var GarageDoor = function GarageDoor(app){
 	};
 	deviceManager.onDeviceEvent(this.device,"stateChange", function(state){
 		console.log(new Date() +" GarageDoor: state change: " + state);
+		this.emit("garageDoorState",state);
 		if(state===1){
 			if(app.open_alert_timer){
 				this._openTimer=setTimeout(function(){
@@ -40,6 +44,6 @@ var GarageDoor = function GarageDoor(app){
 	}.bind(this));
 
 };
-
+util.inherits(GarageDoor, appBase);
 module.exports = GarageDoor;
 

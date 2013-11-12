@@ -1,11 +1,11 @@
 var deviceManager = require("../devices/DeviceManager");
 var util = require("util");
-var events = require("events");
+var appBase = require("./app");
 
 
 var MotionDetector = function (app) {
     "use strict";
-    events.EventEmitter.call(this);  // inherit EventEmitter
+    appBase.call(this);
     console.log("motion detector app started, inherit events");
     this.app = app;
     this.device = app.devicekey;
@@ -44,24 +44,24 @@ var MotionDetector = function (app) {
 
     deviceManager.onDeviceEvent(this.device, "stateChange", function (state) {
         console.log(new Date() + " A motion detector state change: " + state);
-        if (state === 1) {
+        if (state === true) {
             console.log(new Date() + " motion detector on"); // TODO: generate on event
             if (this.holddown) {
                 if (this._timer) {
                     clearTimeout(this._timer);
                     console.log("resetting hold down timer");
                 }
-                this.emit("motionDetectChange", 1);
+                this.emit("motionDetectChange", true);
                 this._holdDownTimerFn();
             }
             else {
-                this.emit("motionDetectChange", 1);
+                this.emit("motionDetectChange", true);
             }
         }
-        else if (state === 0) {
+        else if (state === false) {
             if (!this._timer) {
                 console.log(new Date() + " motion detector, state transition to off");
-                this.emit("motionDetectChange", 0);
+                this.emit("motionDetectChange", false);
             }
         }
 
@@ -72,5 +72,5 @@ var MotionDetector = function (app) {
     };
 
 };
-util.inherits(MotionDetector, events.EventEmitter);
+util.inherits(MotionDetector, appBase);
 module.exports = MotionDetector;

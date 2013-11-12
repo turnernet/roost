@@ -117,6 +117,7 @@ function queryHumidifier(){
 }; 
 
 function processGarageUpdate(updateObject){
+	console.log("processGarageUpdate: " + updateObject.doorOpen);
   if(updateObject.doorOpen !== false){
 	$('#garage').removeClass("btn-success");
 	$('#garage').addClass("btn-danger");
@@ -195,6 +196,15 @@ function dataFeedInit(){
 	processMotionUpdate(data.motion);
 	processHVACUpdate(data.hvac);
 	processHumidifierUpdate(data.humidifier);
+  });
+  
+  
+  socket.on('motionUpdate',function(data){
+	processMotionUpdate(data);
+  });
+  
+  socket.on('garageDoorUpdate',function(data){
+	processGarageUpdate(data);
   });
   
   socket.on('temperatureUpdate', function (data) {

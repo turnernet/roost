@@ -14,14 +14,20 @@ var DevicePoller = function DevicePoller() {
 
     appManager.onAppEvent("motion", "motionDetectChange", function (value) {
         console.log("DevicePoller motionDetectChange " + value);
-        var str = "code=motionDetectChange sourcetype=app app=MotionDetector state=" + value;
-        logger.send(str);
+       // var str = "code=motionDetectChange sourcetype=app app=MotionDetector state=" + value;
+        //logger.send(str);
+		notifications.send("motionUpdate",appManager.appGetRequest("motion"));
     });
 	
 	 appManager.onAppEvent("hvac", "temperatureRead", function (device) {
 		console.log("DevicePoller hvac temperatureRead " + device.name + " " + device.value);
 		notifications.send("temperatureUpdate",device);
 		});
+		
+	appManager.onAppEvent("garage","garageDoorState", function(state){
+		console.log("DevicePoller garage garageDoorState " + state);
+		notifications.send("garageDoorUpdate",appManager.appGetRequest("garage"));
+	});
 		
 	appManager.onAppEvent("hvac","hvacState", function(state){
 		console.log("DevicePoller hvac hvacState " + state);

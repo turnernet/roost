@@ -1,6 +1,6 @@
 var deviceManager = require("../devices/DeviceManager");
-var events = require("events");
 var util = require("util");
+var appBase = require("./app");
 
 var FANHIGH="fanHigh";
 var FANLOW="fanLow";
@@ -8,13 +8,12 @@ var HEAT="heat";
 
 var HVAC = function HVAC(app){
     'use strict';
+	appBase.call(this);
 	this.app = app;
 
 	this.fanLowDevice= app.fanLowDeviceKey;
 	this.fanHighDevice=app.fanHighDeviceKey;
 	this.heatDevice=app.heatDeviceKey;
-	
-	events.EventEmitter.call(this);  // inherit EventEmitter
 	
 	console.log("HVAC app started: "+this.fanLowDevice);
 
@@ -61,5 +60,6 @@ var HVAC = function HVAC(app){
 		this.emit("hvacState",state);
 	}.bind(this));
 };
-util.inherits(HVAC, events.EventEmitter);
+
+util.inherits(HVAC, appBase);
 module.exports = HVAC;

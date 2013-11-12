@@ -112,7 +112,7 @@
 	},
 	{
 	"appname":"motion",
-	"holddown_timer":180000,
+	"holddown_timer":1200000,
 	"devicekey":"motionDetected"
 	},
 	{
