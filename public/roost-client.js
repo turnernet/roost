@@ -146,8 +146,10 @@ function processMotionUpdate(updateObject){
 
 function processHVACUpdate(updateObject){
 
-fanHighEnabled=updateObject.fanHigh;
- if(updateObject.fanHigh !== false){
+ var obj = updateObject;
+  
+ fanHighEnabled=obj.fanHigh;
+ if(obj.fanHigh !== false){
 	$('#fanHigh').removeClass("btn-default");
 	$('#fanHigh').addClass("btn-info");
 	$('#fanHigh').text("Fan On");
@@ -158,7 +160,7 @@ fanHighEnabled=updateObject.fanHigh;
 	$('#fanHigh').text("Fan Off");
   } 
   console.log("processHVACUpdate");
-  var temperatureObjs=updateObject.currentTemperatures;
+  var temperatureObjs=obj.currentTemperatures;
   console.log(temperatureObjs);
   for (var i in temperatureObjs){
 	console.log(temperatureObjs[i]);
@@ -200,25 +202,26 @@ function dataFeedInit(){
   
   
   socket.on('motionUpdate',function(data){
-	processMotionUpdate(data);
+	processMotionUpdate(JSON.parse(data));
   });
   
   socket.on('garageDoorUpdate',function(data){
-	processGarageUpdate(data);
+	processGarageUpdate(JSON.parse(data));
   });
   
   socket.on('temperatureUpdate', function (data) {
-	processTemperatureUpdate(data);
+    console.log(data);
+	processTemperatureUpdate(JSON.parse(data));
   });
   
    socket.on('humidifierUpdate', function (data) {
     console.log("humidifierUpdate " + data);
-	processHumidifierUpdate(data);
+	processHumidifierUpdate(JSON.parse(data));
   });
   
   socket.on('hvacUpdate', function (data) {
     console.log("hvacUpdate " + data);
-	processHVACUpdate(data);
+	processHVACUpdate(JSON.parse(data));
   });
   
   socket.on('connect', function () {console.log("connect: server is online")

@@ -8,8 +8,8 @@ var Notifications = function Notifications() {
 	
 	this.init = function(io){
 		this.io = io;
-		//this.io.set('transports', ['websocket','xhr-polling']);
-		this.io.set('transports', ['websocket']);
+		this.io.set('transports', ['websocket','xhr-polling']);
+		//this.io.set('transports', ['websocket']);
 		this.io.sockets.on('connection', function (socket) {
 				this.emit("clientConnected",socket);
 		}.bind(this));

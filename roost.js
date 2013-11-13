@@ -7,6 +7,8 @@ var devicePoller=require('./services/devicepoller');
 var server = require('http').createServer(api);
 var io = require('socket.io').listen(server);
 var notifications = require('./services/notifications').init(io);
+var users =  require('./users.json');
+
 
 process.on('uncaughtException', function(err) {
   "use strict";
@@ -38,12 +40,16 @@ api.configure(function () {
 	api.use(express.static(__dirname + '/public'));
 });
 
+var auth = express.basicAuth(function(user, pass) {
+ return users[user] && users[user]===pass
+});
+
 api.get('/devices/ow', devices.findAllRequest,devices.findAllResponse);
 api.get('/devices/ow/:id',devices.findByIdRequest,devices.findByIdResponse);
 api.get('/devices/ow/:id/:property',devices.readRequest,devices.readResponse);
 
 api.get('/apps/:app',apps.getAppResource);
-api.post('/apps/:app',apps.postAppResource);
+api.post('/apps/:app',auth,apps.postAppResource);
 
 server.listen(8000);
  

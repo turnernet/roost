@@ -16,27 +16,27 @@ var DevicePoller = function DevicePoller() {
         console.log("DevicePoller motionDetectChange " + value);
        // var str = "code=motionDetectChange sourcetype=app app=MotionDetector state=" + value;
         //logger.send(str);
-		notifications.send("motionUpdate",appManager.appGetRequest("motion"));
+		notifications.send("motionUpdate",JSON.stringify(appManager.appGetRequest("motion")));
     });
 	
 	 appManager.onAppEvent("hvac", "temperatureRead", function (device) {
 		console.log("DevicePoller hvac temperatureRead " + device.name + " " + device.value);
-		notifications.send("temperatureUpdate",device);
+		notifications.send("temperatureUpdate",JSON.stringify(device));
 		});
 		
 	appManager.onAppEvent("garage","garageDoorState", function(state){
 		console.log("DevicePoller garage garageDoorState " + state);
-		notifications.send("garageDoorUpdate",appManager.appGetRequest("garage"));
+		notifications.send("garageDoorUpdate",JSON.stringify(appManager.appGetRequest("garage")));
 	});
 		
 	appManager.onAppEvent("hvac","hvacState", function(state){
 		console.log("DevicePoller hvac hvacState " + state);
-		notifications.send("hvacUpdate",appManager.appGetRequest("hvac"));
+		notifications.send("hvacUpdate",JSON.stringify(appManager.appGetRequest("hvac")));
 	});
 		
 	appManager.onAppEvent("humidifier","humidifierState",function(state){
 		console.log("DevicePoller humidifier humidifierState " + state);
-		notifications.send("humidifierUpdate",appManager.appGetRequest("humidifier"));
+		notifications.send("humidifierUpdate",JSON.stringify(appManager.appGetRequest("humidifier")));
 	});
     this.timerCallback = function () {
         console.log("DevicePoller.timerHigh");
