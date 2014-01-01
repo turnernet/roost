@@ -24,7 +24,7 @@ var DeviceManager = function DeviceManager() {
     this.readAll = function () {
         console.log("ReadAll");
 
-        var result = [];
+        var result = {};
         var key;
         for (var i=0; i < this.devices.length; i++) {
             key = this.devices[i].device.key;

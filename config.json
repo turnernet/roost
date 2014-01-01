@@ -2,56 +2,60 @@
   "devices": [
   {
 	"bus": "1wire",
-    "address": "/28.7E9A2B040000",
+	"address": "/10.FDBF5B020800",
 	"direction": "in",
 	"name": "Kitchen",
 	"readpath":"/temperature",
-	"polling_interval":30000,
-	"key":"Kitchen"
-	},
-	{
-	"bus": "1wire",
-    "address": "/28.D6AA2B040000", 
-	"direction": "in",
-	"name": "Basement 1",
-	"readpath":"/temperature",
-	"polling_interval":60000,
-	"key":"basement1"
-	},
-	{
-	"bus": "1wire",
-	"direction": "in",
-	"address": "/10.5A3D54020800",
-	"name": "Basement 3",
-	"readpath":"/temperature",
-	"polling_interval":60000,
-	"key":"basement3"
+	"polling_interval":10000,
+	"key":"Kitchen",
+	"hvacRules" : {
+		"away" : {"heatOnPoint" : 18, "heatOffPoint" : 18.5},
+		"occupied" : {"heatOnPoint" : 20.00, "heatOffPoint" : 20.2}
+		}
 	},
 	{
 	"bus": "1wire",
 	"direction": "in",
 	"address": "/10.55DA5B020800",
-	"name": "Basement 4",
+	"name": "Master Bedroom",
 	"readpath":"/temperature",
-	"polling_interval":60000,
-	"key":"basement4"
+	"polling_interval":30000,
+	"key":"Master"
+	},
+	{
+	"bus": "1wire",
+    "address": "/28.D6AA2B040000", 
+	"direction": "in",
+	"name": "Bedroom A",
+	"readpath":"/temperature",
+	"polling_interval":30000,
+	"key":"bedroom_a"
 	},
 	{
 	"bus": "1wire",
 	"direction": "in",
-	"address": "/10.FDBF5B020800",
-	"name": "Basement 5",
+	"address": "/10.5A3D54020800",
+	"name": "Basement",
 	"readpath":"/temperature",
-	"polling_interval":60000,
-	"key":"basement5"
+	"polling_interval":30000,
+	"key":"basement"
+	},
+	{
+	"bus": "1wire",
+	"direction": "in",
+	"address": "/28.7E9A2B040000",	
+	"name": "Bedroom B",
+	"readpath":"/temperature",
+	"polling_interval":30000,
+	"key":"bedroom_b"
 	},	
 		{
 	"bus": "1wire",
 	"direction": "in",
-	"address": "/10.FDBF5B020800",
+	"address": "/10.A33654020800",
 	"name": "Outside",
 	"readpath":"/temperature",
-	"polling_interval":60000,
+	"polling_interval":30000,
 	"key":"Outside"
 	},
 	{
@@ -124,7 +128,7 @@
 	"heatDeviceKey":"heatOn",
 	"fanLowDeviceKey":"fanLow",
 	"fanHighDeviceKey":"fanHigh",
-	"temperatureDeviceKeys": ["Kitchen","basement1","basement3","basement4","basement5","Outside"]
+	"temperatureDeviceKeys": ["Kitchen","bedroom_a","basement","Master","bedroom_b","Outside"]
 	}
 	]	
 	

@@ -15,6 +15,7 @@ function fanClick()
 
 };
 function humidifierClick(){
+	console.log("humidifierClick");
 	data={enabled:!humidifierEnabled};
 	$.ajax({
     url: "/apps/humidifier",
@@ -44,8 +45,7 @@ $( document ).ready(function() {
 	queryHumidifier();
 	queryMotion();
 	queryHVAC();
-	*/
-
+	*/ 
 });
 
 
@@ -158,7 +158,18 @@ function processHVACUpdate(updateObject){
     $('#fanHigh').removeClass("btn-info");
 	$('#fanHigh').addClass("btn-default");
 	$('#fanHigh').text("Fan Off");
-  } 
+  }
+ if(obj.heatOn !== false){
+	$('#heat').removeClass("btn-default");
+	$('#heat').addClass("btn-danger");
+	$('#heat').text("Heat On");
+  }
+  else{
+    $('#heat').removeClass("btn-danger");
+	$('#heat').addClass("btn-default");
+	$('#heat').text("Heat Off");
+  }
+  
   console.log("processHVACUpdate");
   var temperatureObjs=obj.currentTemperatures;
   console.log(temperatureObjs);
@@ -186,8 +197,30 @@ function processHumidifierUpdate(updateObject){
 function processTemperatureUpdate(updateObject){
     console.log(updateObject);
 	var temp=parseFloat(updateObject.value);
-	temp=Math.round( temp * 10) / 10
-	$('#'+updateObject.key).text(temp + "\xB0 Celcius");
+	temp=Math.round( temp * 100) / 100
+	var updateTime= new Date(updateObject.updateTime);
+	var hours=updateTime.getHours();
+	var am_pm="am"
+	
+	if(hours>=12){
+		am_pm="pm";
+		if(hours > 12){
+			hours= hours- 12;
+		}
+	}
+	
+	var tempMin = updateTime.getMinutes();
+	var minString;
+	if(tempMin<10){
+		minString = "0"+tempMin;
+	}
+	else{
+		minString = tempMin;
+	}
+	
+	var timeStr=hours + ":"+minString + " " +am_pm;
+	
+	$('#'+updateObject.key).text(temp + "\xB0 C @" + timeStr);
 }
 
 function dataFeedInit(){
@@ -210,7 +243,7 @@ function dataFeedInit(){
   });
   
   socket.on('temperatureUpdate', function (data) {
-    console.log(data);
+    console.log("processTemperatureUpdate" + data);
 	processTemperatureUpdate(JSON.parse(data));
   });
   

@@ -8,7 +8,29 @@ var server = require('http').createServer(api);
 var io = require('socket.io').listen(server);
 var notifications = require('./services/notifications').init(io);
 var users =  require('./users.json');
+var orm = require('orm');
+var datastore = require('./datastore/datastore.js');
 
+
+
+datastore.init(function(err) {
+    if (err) {
+        console.log(err);
+    }
+    else {
+/*	
+datastore.User.create([
+
+	{
+		username: "todd",
+		password: "pass",
+	}
+], function (err, items) {
+	// err - description of the error or null
+	// items - array of inserted items
+});
+*/ 
+}});
 
 process.on('uncaughtException', function(err) {
   "use strict";
@@ -19,7 +41,6 @@ process.on('uncaughtException', function(err) {
 var allowCrossDomain = function(req, res, next) {
     "use strict";
   res.header('Access-Control-Allow-Origin', '*');
-//      res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE','OPTIONS');
   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
         
 // intercept OPTIONS method
@@ -40,8 +61,17 @@ api.configure(function () {
 	api.use(express.static(__dirname + '/public'));
 });
 
-var auth = express.basicAuth(function(user, pass) {
- return users[user] && users[user]===pass
+var auth = express.basicAuth(function(user, pass,callback) {
+	datastore.User.find({ username: user}, function (err, users) {
+	var result = false;
+	console.log(users);
+	if(users.length > 0){
+		console.log(users[0].username + " " + users[0].password + " " + pass);
+		result = (users[0].password === pass);
+	} 
+	console.log(result);
+	callback(null,result);
+	});
 });
 
 api.get('/devices/ow', devices.findAllRequest,devices.findAllResponse);

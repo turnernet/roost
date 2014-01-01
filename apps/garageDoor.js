@@ -1,4 +1,5 @@
 var deviceManager = require("../devices/DeviceManager");
+var util = require("util");
 var appBase = require("./app");
 
 var GarageDoor = function GarageDoor(app){

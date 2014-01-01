@@ -1,45 +1,52 @@
-var cradle = require('cradle');
-var db = new(cradle.Connection)().database('roost');
+var orm = require('orm');
 
 
-var DataStore = function
-db.get('humidifier', function (err, doc) {
+// Will be set on init, null == not set.
+module.exports.User = null;
+module.exports.TempReading = null;
 
-    console.log(doc);
-    var newState="on";
-    if(doc.state ==="on"){
-        newState="off";
-    }
-
-    db.save('humidifier', {
-        state: newState
-    }, function (err, res) {
-        if (err) {
-            // Handle error
-            console.log(err);
-        } else {
-            // Handle success
-            console.log("success");
-        }
+// Callback will be called when done.
+module.exports.init = function(done) {
+    orm.connect("sqlite:roost.db3", function (err, db) {
+	
+	if(err){
+		console.log("orm.connect error " + err);
+		done(err);
+	} else{
+		console.log("orm connect success");
+	}
+	
+    var User = db.define("user", {
+        username: String,
+        password: String,
     });
-
-});
-
-DeviceManager.instance = null;
-
-DeviceManager.getInstance = function () {
-    "use strict";
-    console.log("DeviceManager getInstance called");
-    if (this.instance === null) {
-        this.instance = new DeviceManager();
-    }
-    return this.instance;
+	
+	var TempReading = db.define("tempReading",{
+		timeStamp : Date,
+		label : String,
+		value : Number,
+		});
+    // Make the database.
+    User.sync(function(err) { 
+		if(err){
+			console.log("failed to make user db " + err);
+		}
+	});
+	TempReading.sync(function(err) {
+				if(err){
+			console.log("failed to make tempReading db " + err);
+		}
+	
+	});
+    if (err) {
+		done("Error: could not create the database: " + err);
+	}
+	else {
+		// Export our object for basic interactions.
+		module.exports.User = User;
+		module.exports.TempReading =TempReading;
+		// We're done.
+		done(null);
+	}
+    });
 };
-util.inherits(DeviceManager, EventEmitter);
-module.exports = DeviceManager.getInstance();
-
-
-
-
-
-

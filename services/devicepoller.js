@@ -2,7 +2,8 @@ var logger = require("./logger");
 var async = require('async');
 var deviceManager = require('../devices/DeviceManager');
 var appManager = require('../apps/AppManager');
-var notifications = require('./notifications')
+var notifications = require('./notifications');
+var datastore = require('../datastore/datastore');
 
 var DevicePoller = function DevicePoller() {
     "use strict";
@@ -21,6 +22,20 @@ var DevicePoller = function DevicePoller() {
 	
 	 appManager.onAppEvent("hvac", "temperatureRead", function (device) {
 		console.log("DevicePoller hvac temperatureRead " + device.name + " " + device.value);
+		datastore.TempReading.create([
+		{
+			timeStamp : device.updateTime,
+			label : device.name,
+			value : device.value
+		}
+		], function (err, items) {
+			if(err){
+				console.log(err);
+			}
+	// err - description of the error or null
+	// items - array of inserted items
+	// Pass back both err and address at this point.
+	});
 		notifications.send("temperatureUpdate",JSON.stringify(device));
 		});
 		
@@ -42,15 +57,17 @@ var DevicePoller = function DevicePoller() {
         console.log("DevicePoller.timerHigh");
         var result = deviceManager.readAll();
         console.log(result);
-        var str = "code=status sourcetype=device";
-
-        for (var i = 0; i < result.length; i++) {
-            str = str + ", " + i + "=" + result[i];
-        }
+        var str = "code=status";		
+		for(var prop in result) {
+			if(result.hasOwnProperty(prop)){
+				str = str+ " " + prop +"="+result[prop];
+			}
+		}				
+		console.log(str);
         logger.send(str);
     }.bind(this);
 
-    this.timerhigh = setInterval(this.timerCallback, 1000 * 60 * 5);
+    this.timerhigh = setInterval(this.timerCallback, 1000 * 60 * 1);
 };
 DevicePoller.instance = null;
 DevicePoller.getInstance = function () {
