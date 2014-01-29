@@ -2,6 +2,13 @@ var humidifierEnabled;
 var fanHighEnabled;
 
 
+$(document).on("click", ".tempControlDialog", function () {
+     var id = $(this).data('id');
+	 var val = $(this).data('value');
+     $(".modal-title").html( "<b>"+id+"</b>" );
+	 $(".modal-body-text").text(val);
+});
+
 function fanClick()
 {
 
@@ -38,7 +45,6 @@ $( document ).ready(function() {
 	
 	*/
 	dataFeedInit();
-	
 	/*
 	queryTemperatures();
 	queryGarage();
@@ -219,8 +225,19 @@ function processTemperatureUpdate(updateObject){
 	}
 	
 	var timeStr=hours + ":"+minString + " " +am_pm;
+
+	$('#'+updateObject.key).html('<p ALIGN="left"><b>'+updateObject.name+'</b></p><p ALIGN="right"> '+temp + '\xB0 C @' + timeStr+'</p>');
 	
-	$('#'+updateObject.key).text(temp + "\xB0 C @" + timeStr);
+	if(updateObject.callingForHeat !== undefined){
+		if(updateObject.callingForHeat){
+			$('#'+updateObject.key).removeClass("btn-default");
+			$('#'+updateObject.key).addClass("btn-danger");
+		}
+		else{
+			$('#'+updateObject.key).removeClass("btn-danger");
+			$('#'+updateObject.key).addClass("btn-default");
+		}
+	}
 }
 
 function dataFeedInit(){

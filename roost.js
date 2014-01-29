@@ -2,7 +2,7 @@ var express = require('express');
 var devices= require('./routes/devices');
 var apps = require('./routes/apps');
 var api = express();
-//var logger = require('./services/logger');
+var logger = require('./services/logger');
 var devicePoller=require('./services/devicepoller');
 var server = require('http').createServer(api);
 var io = require('socket.io').listen(server);
@@ -82,5 +82,5 @@ api.get('/apps/:app',apps.getAppResource);
 api.post('/apps/:app',auth,apps.postAppResource);
 
 server.listen(8000);
- 
+logger.send("code=serverStart");
 console.log('Listening on port 8000...');

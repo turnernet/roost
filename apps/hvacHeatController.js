@@ -23,11 +23,12 @@ var hvacHeatController = function hvacHeatController(){
 		}
 		console.log("pushing device calling for heat into list");
 		this.devicesCallingForHeat.push(device);
+		device.callingForHeat = true;
 		this.deviceNames= this.deviceNames + device.name + ",";
 		if(!this.heatStartTime){
 				this.heatStartTime = new Date();
 		} 
-		//this.callForHeatFn(true);
+		this.callForHeatFn(true);
 	}.bind(this);
 
 	this.noCallForHeat = function (device){
@@ -36,6 +37,7 @@ var hvacHeatController = function hvacHeatController(){
 		console.log("No Call for heat " + device.name);
 		for(var i=0; i<this.devicesCallingForHeat.length; i++) {
 				if(this.devicesCallingForHeat[i].name == device.name){
+				    device.callingForHeat = false;
 					this.devicesCallingForHeat.splice(i, 1)[0];
 					console.log("hvacHeatController remove for devices calling for heat " + device.name);
 					break; 

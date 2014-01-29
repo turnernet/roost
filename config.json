@@ -8,9 +8,8 @@
 	"readpath":"/temperature",
 	"polling_interval":10000,
 	"key":"Kitchen",
-	"hvacRules" : {
-		"away" : {"heatOnPoint" : 18, "heatOffPoint" : 18.5},
-		"occupied" : {"heatOnPoint" : 20.00, "heatOffPoint" : 20.2}
+		"hvacRules" : {
+			"occupied" : {"heatOnPoint" : 20.4, "heatOffPoint" : 20.6,"startTime" : "6:00 am", "endTime": "9:45 pm"}
 		}
 	},
 	{
@@ -20,7 +19,10 @@
 	"name": "Master Bedroom",
 	"readpath":"/temperature",
 	"polling_interval":30000,
-	"key":"Master"
+	"key":"Master",
+	"hvacRules" : {
+		"occupied" : {"heatOnPoint" : 17.85, "heatOffPoint" : 18.0,"startTime" : "9:30 pm", "endTime": "7:00 am"}
+		}
 	},
 	{
 	"bus": "1wire",
@@ -29,7 +31,10 @@
 	"name": "Bedroom A",
 	"readpath":"/temperature",
 	"polling_interval":30000,
-	"key":"bedroom_a"
+	"key":"bedroom_a",
+	"hvacRules" : {
+		"occupied" : {"heatOnPoint" : 17.7, "heatOffPoint" : 18.0,"startTime" : "9:30 pm", "endTime": "7:00 am"}
+		}
 	},
 	{
 	"bus": "1wire",

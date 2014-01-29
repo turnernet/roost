@@ -2,6 +2,7 @@ var deviceManager = require("../devices/DeviceManager");
 var util = require("util");
 var appBase = require("./app");
 var hvacHeatController = require("./hvacHeatController");
+var HvacRule = require("./hvacRule");
 
 var FANHIGH="fanHigh";
 var FANLOW="fanLow";
@@ -64,6 +65,31 @@ var HVAC = function HVAC(app){
 			console.log("is device.value: " + device.value + " a number: " + !isNaN(device.value));
 			
 			
+			var hvacRule = new HvacRule();
+			var hvacRules = device.hvacRules;
+			if(hvacRules != undefined && hvacRules.occupied 
+				&& hvacRules.occupied.heatOnPoint && hvacRules.occupied.heatOffPoint
+				&& hvacRules.occupied.startTime && hvacRules.occupied.endTime){			
+					hvacRule.setStartTime(hvacRules.occupied.startTime);
+					hvacRule.setEndTime(hvacRules.occupied.endTime);
+					hvacRule.setHeatPoints(hvacRules.occupied.heatOnPoint,hvacRules.occupied.heatOffPoint);
+					if(isNaN(device.value) || device.value == 85){
+						console.log("Bad temperature");
+						this.hvacHeatController.noCallForHeat(device);
+					}
+					else if(hvacRule.isActiveAt(new Date()) && (device.value <= hvacRule.getHeatOnPoint())){
+						this.hvacHeatController.callForHeat(device);
+					}
+					else if (device.value >= hvacRule.getHeatOffPoint()){
+						this.hvacHeatController.noCallForHeat(device);
+					}
+					else {
+						console.log(device.name + " " + hvacRules.occupied.heatOnPoint + " < " + device.value
+						+ " < " + hvacRules.occupied.heatOffPoint);
+					}
+			}
+			
+		/*	
 			var hvacRules = device.hvacRules;
 			if(hvacRules != undefined && hvacRules.occupied 
 				&& hvacRules.occupied.heatOnPoint && hvacRules.occupied.heatOffPoint){			
@@ -82,6 +108,7 @@ var HVAC = function HVAC(app){
 						+ " < " + hvacRules.occupied.heatOffPoint);
 					}
 			}
+			*/
 			else{
 				console.log("No hvacRules for " + device.name);
 			}

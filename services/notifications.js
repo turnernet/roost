@@ -1,5 +1,6 @@
 var util = require("util");
 var events = require("events");
+var logger = require("./logger");
 
 
 var Notifications = function Notifications() {
@@ -9,9 +10,12 @@ var Notifications = function Notifications() {
 	this.init = function(io){
 		this.io = io;
 		this.io.set('transports', ['websocket','xhr-polling']);
-		//this.io.set('transports', ['websocket']);
 		this.io.sockets.on('connection', function (socket) {
+		//this.io.set('transports', ['websocket']);
 				this.emit("clientConnected",socket);
+				var address = socket.handshake.address;
+				console.log("New connection from " + address.address)
+				logger.send("code=clientConnect address="+address.address);
 		}.bind(this));
 	}
 	
